@@ -15,11 +15,11 @@
             --med-dark: #145226;          
             --med-gradient: linear-gradient(135deg, #1E7134 0%, #43a047 100%); 
 
-            --glass-bg: rgba(255, 255, 255, 0.12); 
+            --glass-bg: rgba(255, 255, 255, 0.22); 
             --glass-border: 1px solid rgba(255, 255, 255, 0.5);
             --glass-shadow: 0 8px 32px rgba(30, 113, 52, 0.15); 
 
-            --card-bg: rgba(255, 255, 255, 0.6); 
+            --card-bg: rgba(255, 255, 255, 0.70); 
             --card-bg-solid: #ffffff;            
             --card-radius: 12px;
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -118,12 +118,12 @@
         }
 
         .footer-badge {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ff9800;
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
             padding: 6px 16px;
             border-radius: 20px;
             display: inline-block;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.30);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
@@ -131,18 +131,18 @@
         .tabs { 
             display: flex; 
             padding: 20px 20px 0 20px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.30);
             justify-content: center;
             gap: 15px;
         }
         .tab-btn {
-            padding: 12px 30px; border: 1px solid rgba(255,255,255,0.4); 
-            background: rgba(255,255,255,0.2);
+            padding: 12px 30px; border: 1px solid rgba(255, 255, 255, 0.50); 
+            background: rgba(255, 255, 255, 0.30);
             font-weight: 700; color: var(--med-dark); cursor: pointer;
             font-size: 13px; text-transform: uppercase; transition: all 0.3s;
             border-radius: 30px;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.4); }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.50); }
         .tab-btn.active { 
             color: white; 
             background: var(--med-gradient); 
@@ -160,7 +160,7 @@
             box-shadow: var(--card-shadow);
             padding: 20px; 
             border-radius: var(--card-radius); 
-            border: 1px solid rgba(255,255,255,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.70);
             margin-bottom: 12px;
         }
 
@@ -321,9 +321,9 @@
 
             .section-card { 
                 border-radius: 16px !important; 
-                border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+                border: 1px solid rgba(255, 255, 255, 0.40) !important; 
                 box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; 
-                background: rgba(255, 255, 255, 0.05) !important; 
+                background: rgba(255, 255, 255, 0.25) !important; 
                 backdrop-filter: blur(10px); 
                 width: 100%; 
             }
@@ -413,7 +413,7 @@
         /* Custom overlay scrollbar */
         #csb { position:fixed; top:0; right:3px; width:3px; height:100vh; z-index:99999; pointer-events:none; opacity:0; transition:opacity 0.25s ease; }
         #csb.show { opacity:1; }
-        #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255,255,255,0.45); border-radius:4px; transition:background 0.2s; min-height:28px; }
+        #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255, 255, 255, 0.55); border-radius:4px; transition:background 0.2s; min-height:28px; }
         #csb-thumb:hover { background:rgba(255,255,255,0.75); }
     </style>
 </head>
@@ -425,7 +425,7 @@
         <div>
             <h1 style="display: flex; align-items: center; justify-content: center; gap: 12px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-                    <path d="M10.5 20.5l-6-6a4.95 4.95 0 1 1 7-7l6 6a4.95 4.95 0 1 1-7 7Z" fill="rgba(255,255,255,0.2)"/>
+                    <path d="M10.5 20.5l-6-6a4.95 4.95 0 1 1 7-7l6 6a4.95 4.95 0 1 1-7 7Z" fill="rgba(255, 255, 255, 0.30)"/>
                     <line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/>
                     <path d="M19 4v6m-3-3h6" stroke-width="2"/>
                 </svg>
