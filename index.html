@@ -4,26 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tra cứu tương tác thuốc - MedPlus Auto Search</title>
-    
+
     <link rel="preload" as="image" href="https://lh3.googleusercontent.com/u/0/d/1j_iqqlApN1D2tQVi8N4a31-ZIj_YLRvX">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-        /* BẮT BUỘC ĐỂ FLEXBOX CĂN GIỮA DỌC TRÊN MỌI TRÌNH DUYỆT */
-        html, body {
-            height: 100%;
-        }
-
         :root {
             --med-primary: #1E7134;        
             --med-dark: #145226;          
             --med-gradient: linear-gradient(135deg, #1E7134 0%, #43a047 100%); 
-            
+
             --glass-bg: rgba(255, 255, 255, 0.12); 
             --glass-border: 1px solid rgba(255, 255, 255, 0.5);
             --glass-shadow: 0 8px 32px rgba(30, 113, 52, 0.15); 
-            
+
             --card-bg: rgba(255, 255, 255, 0.6); 
             --card-bg-solid: #ffffff;            
             --card-radius: 12px;
@@ -46,9 +41,9 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             position: relative;
-            
+
             /* THIẾT LẬP FLEX ĐỂ TỰ ĐỘNG CĂN GIỮA */
-            min-height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -66,6 +61,8 @@
             will-change: transform;
         }
 
+
+
         *, *:before, *:after { box-sizing: inherit; }
 
         .app-container {
@@ -76,13 +73,7 @@
             flex-direction: column;
             gap: 20px; 
             width: 100%;
-            transition: margin-top 0.4s ease-in-out; /* Hiệu ứng trượt mượt mà */
-        }
-        
-        /* CLASS ĐẨY GIAO DIỆN LÊN TOP KHI CÓ KẾT QUẢ */
-        body.search-active .app-container {
-            margin-top: 0;
-            margin-bottom: auto; /* Đảm bảo được đẩy sát lên trên */
+            transition: margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .section-card {
@@ -124,12 +115,11 @@
 
         .footer { 
             text-align: center; padding: 15px; font-size: 13px; 
-            /* Đã xóa hiệu ứng nền kính mờ ở container này */
         }
-        
+
         .footer-badge {
-            background: rgba(255, 255, 255, 0.15); /* Nền trong mờ */
-            color: #ff9800; /* Màu cam */
+            background: rgba(255, 255, 255, 0.15);
+            color: #ff9800;
             padding: 6px 16px;
             border-radius: 20px;
             display: inline-block;
@@ -173,7 +163,7 @@
             border: 1px solid rgba(255,255,255,0.6);
             margin-bottom: 12px;
         }
-        
+
         .input-wrapper-integrated {
             position: relative;
             width: 100%;
@@ -200,7 +190,7 @@
             position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
             display: flex; align-items: center;
         }
-        
+
         .action-icon {
             cursor: pointer; display: flex; justify-content: center; align-items: center;
             width: 38px; height: 38px; border-radius: 50%; transition: 0.2s; border: none;
@@ -236,7 +226,7 @@
 
         .result-container { display: none; margin-top: 15px; animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         .result-item-wrapper {
             background: var(--card-bg-solid); color: #333;
             border-radius: var(--card-radius); overflow: hidden; 
@@ -253,7 +243,7 @@
         }
 
         .ddi-row { border-bottom: 1px solid #f0f0f0; display: flex; }
-        
+
         .ddi-col-key {
             width: 25%; background-color: #fafafa; font-weight: 600; color: #555;
             padding: 12px 20px; border-right: 1px solid #f0f0f0; flex-shrink: 0; display: flex; align-items: center; 
@@ -264,7 +254,7 @@
             font-size: 16px; 
             line-height: 1.6; 
         }
-        
+
         .severity-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .sev-high { background: #ffebee; color: var(--danger); border: 1px solid #ef9a9a; }
         .sev-med { background: #fffde7; color: #f9a825; border: 1px solid #fff59d; }
@@ -280,7 +270,7 @@
         .disease-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
         .disease-card.severe::before { background: var(--danger); }
         .disease-card.cond::before { background: var(--warning); }
-        
+
         .d-card-header { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--med-primary); }
         .icd-block {
             font-size: 12px; color: #0277bd; font-weight: 500;
@@ -292,7 +282,7 @@
             margin-top: auto; padding-top: 15px; border-top: 1px dashed #ddd; 
             color: var(--med-primary); font-weight: 600; font-size: 14px;
         }
-        
+
         .empty-state { 
             text-align: center; padding: 20px; color: #444; 
             border-radius: var(--card-radius); background: var(--card-bg); 
@@ -300,7 +290,7 @@
         }
         .empty-icon { font-size: 45px; margin-bottom: 15px; opacity:0.8; }
         .empty-text { font-weight: 500; }
-        
+
         .inline-search-icon {
             display: inline-flex; justify-content: center; align-items: center;
             width: 24px; height: 24px; background: var(--med-primary);
@@ -328,7 +318,7 @@
                 width: 100%;
                 overflow-x: hidden;
             }
-            
+
             .section-card { 
                 border-radius: 16px !important; 
                 border: 1px solid rgba(255, 255, 255, 0.3) !important; 
@@ -341,18 +331,18 @@
             .header { padding: 15px 10px; }
             .header h1 { font-size: 18px; margin-bottom: 2px; }
             .header span { font-size: 12px; margin-top: 0; }
-            
+
             .tabs { padding: 10px; gap: 8px; }
             .tab-btn { padding: 8px 15px; font-size: 12px; }
 
             .tab-content { padding: 15px 10px; width: 100%; }
-            
+
             .search-toolbar { 
                 padding: 8px; 
                 margin-bottom: 6px; 
                 width: 100%;
             }
-            
+
             input.main-input {
                 height: 40px; 
                 font-size: 16px !important; 
@@ -367,13 +357,13 @@
                 width: 16px;
                 height: 16px;
             }
-            
+
             .tags-wrapper { 
                 margin-bottom: 6px; 
                 min-height: 30px; 
             }
             .tag-chip { padding: 4px 10px; font-size: 12px; }
-            
+
             .empty-state { padding: 15px 10px; }
             .empty-icon { font-size: 32px !important; margin-bottom: 5px !important; }
             .empty-text { font-size: 13px; }
@@ -396,17 +386,17 @@
                 display: block; 
                 max-width: 100vw; 
             }
-            
+
             .result-item-wrapper { width: 100%; max-width: 100%; }
             .interaction-header {
                 white-space: normal;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
             }
-            
+
             .card-grid { grid-template-columns: 1fr; width: 100%; }
             .footer { padding: 10px; font-size: 12px; }
-            
+
             .toast-msg { 
                 right: 50%; bottom: 20px; 
                 transform: translateX(50%) translateY(20px);
@@ -414,6 +404,8 @@
             }
             .toast-msg.show { transform: translateX(50%) translateY(0) !important; }
         }
+
+        /* ── SCROLLBAR (giống tiêm truyền) ── */
         @media (hover: hover) {
             html { scrollbar-width: none; -ms-overflow-style: none; }
             ::-webkit-scrollbar { display: none; width: 0; }
@@ -428,7 +420,7 @@
 <body>
 
 <div class="app-container">
-    
+
     <div class="header section-card">
         <div>
             <h1 style="display: flex; align-items: center; justify-content: center; gap: 12px;">
@@ -442,7 +434,7 @@
             <span>Hỗ trợ cán bộ y tế - BVĐK Tuyên Quang</span>
         </div>
     </div>
-    
+
     <div class="main-body section-card">
         <div class="tabs" style="display:none;">
             <button class="tab-btn active" onclick="switchTab('tab2', this)">Tương tác Thuốc - Thuốc</button>
@@ -453,7 +445,7 @@
             <div class="search-toolbar">
                 <div class="input-wrapper-integrated">
                     <input type="text" id="ddiInput" class="main-input" placeholder="Nhập tên hoạt chất (VD: Clarithromycin)..." autocomplete="off">
-                    
+
                     <div class="search-actions">
                         <div id="btnSearch" class="action-icon icon-search" onclick="searchDDI()" title="Tra cứu">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -512,7 +504,33 @@
 <div id="toast" class="toast-msg">Thông báo</div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwtj4OJRTB3o5nhtGhBN_0mGOUpklkenB5EOrwJjDlKSEVY5ZaWpe3LuDAj31GU6pji/exec"; 
+    // ── VERTICAL CENTER / PUSH TO TOP ──
+    function centerUI(animate) {
+        var el = document.querySelector('.app-container');
+        if (!el) return;
+        var vh = window.innerHeight;
+        var bodyPad = window.innerWidth <= 768 ? 20 : 40;
+        var elH = el.offsetHeight;
+        var mt = Math.max(0, Math.floor((vh - elH - bodyPad) / 2));
+        if (!animate) el.style.transition = 'none';
+        el.style.marginTop = mt + 'px';
+        if (!animate) setTimeout(function(){ el.style.transition = ''; }, 50);
+    }
+    function pushToTop(animate) {
+        var el = document.querySelector('.app-container');
+        if (!el) return;
+        if (!animate) el.style.transition = 'none';
+        el.style.marginTop = '0px';
+        if (!animate) setTimeout(function(){ el.style.transition = ''; }, 50);
+    }
+    window.addEventListener('resize', function() {
+        // Re-center nếu không đang search
+        var hasResult = document.getElementById('resultWrapperDDI') &&
+                        document.getElementById('resultWrapperDDI').style.display === 'block';
+        if (!hasResult) centerUI(false);
+    });
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbwtj4OJRTB3o5nhtGhBN_0mGOUpklkenB5EOrwJjDlKSEVY5ZaWpe3LuDAj31GU6pji/exec"; 
     const CACHE_KEY = "DLS_Desktop_FixICD_v4"; 
 
     let dbBenh = [], dbDDI = [], dbICD = [], suggestionList = [], selectedDrugs = [];
@@ -537,12 +555,13 @@
             } catch(e) {}
         }
         fetchDataFromCloud(!hasCache);
+        setTimeout(function(){ centerUI(false); }, 50);
     };
 
     async function fetchDataFromCloud(showUI) {
         const loader = document.getElementById('loader');
         const emptyState = document.getElementById('emptyStateDDI');
-        
+
         if(showUI) {
             if(loader) loader.style.display = 'block';
             if(emptyState) emptyState.style.display = 'none';
@@ -598,21 +617,20 @@
         document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
         document.getElementById(id).classList.add('active'); btn.classList.add('active');
-        
-        // Thêm tính năng tự động trượt lên top/về giữa khi chuyển tab
+
         if (id === 'tab2') {
             if (document.getElementById('resultWrapperDDI').style.display === 'block') {
-                document.body.classList.add('search-active');
+                pushToTop(true);
             } else {
-                document.body.classList.remove('search-active');
+                centerUI(true);
             }
         } else if (id === 'tab1') {
             const q = document.getElementById('searchBenhInput').value.toLowerCase().trim();
             const hasResults = document.getElementById('resultBenh').innerHTML.trim() !== "" && document.getElementById('resultBenh').innerHTML.indexOf('Nhập từ khóa') === -1;
             if (q || hasResults) {
-                document.body.classList.add('search-active');
+                pushToTop(true);
             } else {
-                document.body.classList.remove('search-active');
+                centerUI(true);
             }
         }
     }
@@ -620,12 +638,12 @@
     function createBenhCardHTML(item) {
         const isSevere = item.severity.toLowerCase().includes("chống chỉ định");
         const cls = isSevere ? "severe" : "cond";
-        
+
         const cleanDiseaseName = item.disease.replace(/\s*\([*]+\)/g, '').trim();
 
         let icdDisplay = "";
         const cleanNameLower = item.disease.toLowerCase();
-        
+
         const matchICD = dbICD.find(i => cleanNameLower.includes(i.name.toLowerCase()));
 
         if (matchICD) {
@@ -635,7 +653,7 @@
         }
 
         const icdBlock = icdDisplay ? `<div class="icd-block">${icdDisplay}</div>` : '';
-        
+
         let detailBlock = '';
         if(item.detail && item.detail.trim() !== '' && item.detail !== '---') {
             detailBlock = `<div class="d-card-body"><strong>Chi tiết:</strong> ${item.detail}</div>`;
@@ -649,25 +667,25 @@
             <div class="d-manage">⚕️ <strong>Xử trí:</strong> ${item.manage}</div>
         </div>`;
     }
-    
+
     function renderBenh() {
         const q = document.getElementById('searchBenhInput').value.toLowerCase().trim();
         const div = document.getElementById('resultBenh');
         if(!q) { 
             div.innerHTML = ""; 
-            document.body.classList.remove('search-active'); // Đưa về giữa
+            centerUI(true);
             return; 
         }
-        document.body.classList.add('search-active'); // Đẩy lên top
+        pushToTop(true);
         const res = dbBenh.filter(i => String(i.drug).toLowerCase().includes(q) || String(i.disease).toLowerCase().includes(q));
         if(res.length === 0) { div.innerHTML = "<div style='grid-column:1/-1; text-align:center; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.3);'>Không tìm thấy.</div>"; return; }
         div.innerHTML = res.map(createBenhCardHTML).join('');
     }
-    
+
     function showAllBenh() {
         document.getElementById('searchBenhInput').value = "";
         document.getElementById('resultBenh').innerHTML = dbBenh.map(createBenhCardHTML).join('');
-        document.body.classList.add('search-active'); // Đẩy lên top
+        pushToTop(true);
     }
 
     const ddiInput = document.getElementById("ddiInput");
@@ -719,11 +737,11 @@
         document.getElementById('resultWrapperDDI').style.display = 'none';
         document.getElementById('ddiError').style.display = 'none';
         document.getElementById('ddiInput').value = "";
-        
+
         document.getElementById('btnSearch').style.display = 'flex';
         document.getElementById('btnReset').style.display = 'none';
-        
-        document.body.classList.remove('search-active'); // Đưa giao diện về giữa
+
+        centerUI(true);
     }
 
     function renderTags() {
@@ -734,12 +752,12 @@
         if(selectedDrugs.length < 2) { document.getElementById('ddiError').style.display = 'block'; return; }
         document.getElementById('ddiError').style.display = 'none';
         document.getElementById('emptyStateDDI').style.display = 'none';
-        
+
         document.getElementById('btnSearch').style.display = 'none';
         document.getElementById('btnReset').style.display = 'flex';
-        
-        document.body.classList.add('search-active'); // Đẩy giao diện lên top
-        
+
+        pushToTop(true);
+
         let found = [];
         for(let i=0; i<selectedDrugs.length; i++) {
             for(let j=i+1; j<selectedDrugs.length; j++) {
@@ -764,7 +782,7 @@
         wrapper.innerHTML = found.map((item, idx) => {
             const isSevere = item.severity.toLowerCase().includes("chống chỉ định");
             const badgeCls = isSevere ? "sev-high" : "sev-med";
-            
+
             return `
             <div class="result-item-wrapper">
                 <div class="interaction-header">
@@ -795,6 +813,8 @@
             </div>`;
         }).join('');
     }
+
+    // ── CUSTOM SCROLLBAR (giống tiêm truyền) ──
     (function() {
         // Chỉ chạy trên PC - iOS/mobile đã có native overlay scrollbar tốt sẵn rồi
         if (window.matchMedia('(hover: none)').matches) return;
@@ -804,16 +824,19 @@
         var thumb = document.createElement('div'); thumb.id = 'csb-thumb';
         track.appendChild(thumb);
         document.body.appendChild(track);
+
         var hideTimer = null;
         var isDragging = false;
         var dragStartY = 0;
         var dragStartScrollTop = 0;
+
         function getScrollInfo() {
             var st = window.pageYOffset || document.documentElement.scrollTop;
             var sh = document.documentElement.scrollHeight;
             var ch = document.documentElement.clientHeight || window.innerHeight;
             return { st: st, sh: sh, ch: ch };
         }
+
         function updateThumb() {
             var s = getScrollInfo();
             if (s.sh <= s.ch) { track.classList.remove('show'); return; }
@@ -824,22 +847,26 @@
             thumb.style.height = thumbH + 'px';
             thumb.style.top    = thumbTop + 'px';
         }
+
         function showBar() {
             clearTimeout(hideTimer);
             updateThumb();
             var s = getScrollInfo();
             if (s.sh > s.ch) track.classList.add('show');
         }
+
         function hideBar(delay) {
             clearTimeout(hideTimer);
             if (isDragging) return;
             hideTimer = setTimeout(function(){ track.classList.remove('show'); }, delay || 900);
         }
+
         // Hiện khi scroll
         window.addEventListener('scroll', function() {
             showBar();
             hideBar(900);
         }, { passive: true });
+
         // PC: hiện khi chuột vào vùng cạnh phải 20px
         if (!window.matchMedia('(hover: none)').matches) {
             document.addEventListener('mousemove', function(e) {
@@ -849,6 +876,7 @@
             });
             document.addEventListener('mouseleave', function(){ hideBar(300); });
         }
+
         // Drag scrollbar bằng chuột
         thumb.style.pointerEvents = 'auto';
         thumb.style.cursor = 'pointer';
@@ -875,6 +903,7 @@
             document.body.style.userSelect = '';
             hideBar(900);
         });
+
         // Update vị trí khi resize
         window.addEventListener('resize', function(){ if(track.classList.contains('show')) updateThumb(); });
     })();
