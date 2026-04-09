@@ -41,6 +41,11 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             position: relative;
+            
+            /* THIẾT LẬP FLEX ĐỂ TỰ ĐỘNG CĂN GIỮA */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* TỐI ƯU HÓA: Sử dụng host trực tiếp từ Google để ảnh nền hiện ngay lập tức */
@@ -55,17 +60,23 @@
             background-repeat: no-repeat;
             will-change: transform;
         }
+        
+        /* CLASS ĐẨY GIAO DIỆN LÊN TOP KHI CÓ KẾT QUẢ */
+        body.search-active .app-container {
+            margin-top: 0;
+        }
 
         *, *:before, *:after { box-sizing: inherit; }
 
         .app-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: auto; /* Tự động căn giữa dọc và ngang */
             min-height: auto; 
             display: flex;
             flex-direction: column;
             gap: 20px; 
             width: 100%;
+            transition: margin-top 0.5s ease; /* Hiệu ứng trượt mượt mà */
         }
 
         .section-card {
@@ -107,21 +118,18 @@
 
         .footer { 
             text-align: center; padding: 15px; font-size: 13px; 
-            color: var(--warning); 
-            font-weight: 700;
-            background: rgba(255,255,255,0.1); 
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5); 
+            /* Đã xóa hiệu ứng nền kính mờ ở container này */
         }
         
         .footer-badge {
-            background: var(--med-primary);
-            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15); /* Nền trong mờ */
+            color: #ff9800; /* Màu cam */
             padding: 6px 16px;
             border-radius: 20px;
             display: inline-block;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            text-shadow: none;
             border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .tabs { 
@@ -400,6 +408,15 @@
             }
             .toast-msg.show { transform: translateX(50%) translateY(0) !important; }
         }
+        @media (hover: hover) {
+            html { scrollbar-width: none; -ms-overflow-style: none; }
+            ::-webkit-scrollbar { display: none; width: 0; }
+        }
+        /* Custom overlay scrollbar */
+        #csb { position:fixed; top:0; right:3px; width:3px; height:100vh; z-index:99999; pointer-events:none; opacity:0; transition:opacity 0.25s ease; }
+        #csb.show { opacity:1; }
+        #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255,255,255,0.45); border-radius:4px; transition:background 0.2s; min-height:28px; }
+        #csb-thumb:hover { background:rgba(255,255,255,0.75); }
     </style>
 </head>
 <body>
@@ -480,7 +497,7 @@
         </div>
     </div>
 
-    <div class="footer section-card">
+    <div class="footer">
         <span class="footer-badge">Khoa Dược - BVĐK Tuyên Quang</span>
     </div>
 
@@ -575,6 +592,23 @@
         document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
         document.getElementById(id).classList.add('active'); btn.classList.add('active');
+        
+        // Thêm tính năng tự động trượt lên top/về giữa khi chuyển tab
+        if (id === 'tab2') {
+            if (document.getElementById('resultWrapperDDI').style.display === 'block') {
+                document.body.classList.add('search-active');
+            } else {
+                document.body.classList.remove('search-active');
+            }
+        } else if (id === 'tab1') {
+            const q = document.getElementById('searchBenhInput').value.toLowerCase().trim();
+            const hasResults = document.getElementById('resultBenh').innerHTML.trim() !== "" && document.getElementById('resultBenh').innerHTML.indexOf('Nhập từ khóa') === -1;
+            if (q || hasResults) {
+                document.body.classList.add('search-active');
+            } else {
+                document.body.classList.remove('search-active');
+            }
+        }
     }
 
     function createBenhCardHTML(item) {
@@ -613,7 +647,12 @@
     function renderBenh() {
         const q = document.getElementById('searchBenhInput').value.toLowerCase().trim();
         const div = document.getElementById('resultBenh');
-        if(!q) { div.innerHTML = ""; return; }
+        if(!q) { 
+            div.innerHTML = ""; 
+            document.body.classList.remove('search-active'); // Đưa về giữa
+            return; 
+        }
+        document.body.classList.add('search-active'); // Đẩy lên top
         const res = dbBenh.filter(i => String(i.drug).toLowerCase().includes(q) || String(i.disease).toLowerCase().includes(q));
         if(res.length === 0) { div.innerHTML = "<div style='grid-column:1/-1; text-align:center; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.3);'>Không tìm thấy.</div>"; return; }
         div.innerHTML = res.map(createBenhCardHTML).join('');
@@ -622,6 +661,7 @@
     function showAllBenh() {
         document.getElementById('searchBenhInput').value = "";
         document.getElementById('resultBenh').innerHTML = dbBenh.map(createBenhCardHTML).join('');
+        document.body.classList.add('search-active'); // Đẩy lên top
     }
 
     const ddiInput = document.getElementById("ddiInput");
@@ -676,6 +716,8 @@
         
         document.getElementById('btnSearch').style.display = 'flex';
         document.getElementById('btnReset').style.display = 'none';
+        
+        document.body.classList.remove('search-active'); // Đưa giao diện về giữa
     }
 
     function renderTags() {
@@ -689,6 +731,8 @@
         
         document.getElementById('btnSearch').style.display = 'none';
         document.getElementById('btnReset').style.display = 'flex';
+        
+        document.body.classList.add('search-active'); // Đẩy giao diện lên top
         
         let found = [];
         for(let i=0; i<selectedDrugs.length; i++) {
@@ -745,6 +789,89 @@
             </div>`;
         }).join('');
     }
+    (function() {
+        // Chỉ chạy trên PC - iOS/mobile đã có native overlay scrollbar tốt sẵn rồi
+        if (window.matchMedia('(hover: none)').matches) return;
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+        // Tạo element
+        var track = document.createElement('div'); track.id = 'csb';
+        var thumb = document.createElement('div'); thumb.id = 'csb-thumb';
+        track.appendChild(thumb);
+        document.body.appendChild(track);
+        var hideTimer = null;
+        var isDragging = false;
+        var dragStartY = 0;
+        var dragStartScrollTop = 0;
+        function getScrollInfo() {
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            var sh = document.documentElement.scrollHeight;
+            var ch = document.documentElement.clientHeight || window.innerHeight;
+            return { st: st, sh: sh, ch: ch };
+        }
+        function updateThumb() {
+            var s = getScrollInfo();
+            if (s.sh <= s.ch) { track.classList.remove('show'); return; }
+            var ratio     = s.ch / s.sh;
+            var thumbH    = Math.max(28, ratio * s.ch);
+            var maxTop    = s.ch - thumbH;
+            var thumbTop  = (s.st / (s.sh - s.ch)) * maxTop;
+            thumb.style.height = thumbH + 'px';
+            thumb.style.top    = thumbTop + 'px';
+        }
+        function showBar() {
+            clearTimeout(hideTimer);
+            updateThumb();
+            var s = getScrollInfo();
+            if (s.sh > s.ch) track.classList.add('show');
+        }
+        function hideBar(delay) {
+            clearTimeout(hideTimer);
+            if (isDragging) return;
+            hideTimer = setTimeout(function(){ track.classList.remove('show'); }, delay || 900);
+        }
+        // Hiện khi scroll
+        window.addEventListener('scroll', function() {
+            showBar();
+            hideBar(900);
+        }, { passive: true });
+        // PC: hiện khi chuột vào vùng cạnh phải 20px
+        if (!window.matchMedia('(hover: none)').matches) {
+            document.addEventListener('mousemove', function(e) {
+                var fromRight = (document.documentElement.clientWidth || window.innerWidth) - e.clientX;
+                if (fromRight <= 20) { showBar(); clearTimeout(hideTimer); }
+                else if (track.classList.contains('show') && !isDragging) hideBar(900);
+            });
+            document.addEventListener('mouseleave', function(){ hideBar(300); });
+        }
+        // Drag scrollbar bằng chuột
+        thumb.style.pointerEvents = 'auto';
+        thumb.style.cursor = 'pointer';
+        thumb.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            isDragging = true;
+            dragStartY = e.clientY;
+            dragStartScrollTop = window.pageYOffset;
+            document.body.style.userSelect = 'none';
+        });
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            var s = getScrollInfo();
+            var thumbH = Math.max(28, (s.ch / s.sh) * s.ch);
+            var maxTop = s.ch - thumbH;
+            var delta  = e.clientY - dragStartY;
+            var scrollDelta = (delta / maxTop) * (s.sh - s.ch);
+            window.scrollTo(0, dragStartScrollTop + scrollDelta);
+            updateThumb();
+        });
+        document.addEventListener('mouseup', function() {
+            if (!isDragging) return;
+            isDragging = false;
+            document.body.style.userSelect = '';
+            hideBar(900);
+        });
+        // Update vị trí khi resize
+        window.addEventListener('resize', function(){ if(track.classList.contains('show')) updateThumb(); });
+    })();
 </script>
 
 </body>
