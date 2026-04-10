@@ -636,19 +636,19 @@
     }
 
     function createBenhCardHTML(item) {
-        const isSevere = item.severity.toLowerCase().includes("chống chỉ định");
+        const isSevere = (item.severity || "").toLowerCase().includes("chống chỉ định");
         const cls = isSevere ? "severe" : "cond";
 
-        const cleanDiseaseName = item.disease.replace(/\s*\([*]+\)/g, '').trim();
+        const cleanDiseaseName = (item.disease || "").replace(/\s*\([*]+\)/g, '').trim();
 
         let icdDisplay = "";
-        const cleanNameLower = item.disease.toLowerCase();
+        const cleanNameLower = (item.disease || "").toLowerCase();
 
         const matchICD = dbICD.find(i => cleanNameLower.includes(i.name.toLowerCase()));
 
         if (matchICD) {
             icdDisplay = `🔖 ICD: <strong>${matchICD.name}</strong> - ${matchICD.detail}`;
-        } else if (item.icd_short) {
+        } else if (item.icd_short && item.icd_short !== '---') {
             icdDisplay = `🔖 ICD: <strong>${item.icd_short}</strong>`;
         }
 
@@ -659,12 +659,22 @@
             detailBlock = `<div class="d-card-body"><strong>Chi tiết:</strong> ${item.detail}</div>`;
         }
 
+        let manageBlock = '';
+        if(item.manage && item.manage.trim() !== '' && item.manage !== '---') {
+            manageBlock = `<div class="d-manage">⚕️ <strong>Xử trí:</strong> ${item.manage}</div>`;
+        }
+
+        let severityBlock = '';
+        if(item.severity && item.severity.trim() !== '' && item.severity !== '---') {
+            severityBlock = `<div style="margin-bottom:8px;"><span class="severity-badge ${isSevere ? 'sev-high' : 'sev-med'}">${item.severity}</span></div>`;
+        }
+
         return `<div class="disease-card ${cls}">
             <div class="d-card-header">${item.drug} ↔ ${cleanDiseaseName}</div>
             ${icdBlock}
-            <div style="margin-bottom:8px;"><span class="severity-badge ${isSevere ? 'sev-high' : 'sev-med'}">${item.severity}</span></div>
+            ${severityBlock}
             ${detailBlock}
-            <div class="d-manage">⚕️ <strong>Xử trí:</strong> ${item.manage}</div>
+            ${manageBlock}
         </div>`;
     }
 
@@ -780,8 +790,9 @@
         }
 
         wrapper.innerHTML = found.map((item, idx) => {
-            const isSevere = item.severity.toLowerCase().includes("chống chỉ định");
+            const isSevere = (item.severity || "").toLowerCase().includes("chống chỉ định");
             const badgeCls = isSevere ? "sev-high" : "sev-med";
+            const isEmpty = (val) => !val || String(val).trim() === '' || String(val).trim() === '---';
 
             return `
             <div class="result-item-wrapper">
@@ -789,30 +800,36 @@
                     <span>⚠️ Cặp tương tác ${idx + 1}: ${item.d1} + ${item.d2}</span>
                 </div>
                 <div class="result-table">
+                    ${!isEmpty(item.severity) ? `
                     <div class="ddi-row">
                         <div class="ddi-col-key">Mức độ</div>
                         <div class="ddi-col-val"><span class="severity-badge ${badgeCls}">${item.severity}</span></div>
-                    </div>
+                    </div>` : ''}
+                    ${!isEmpty(item.group) ? `
                     <div class="ddi-row">
                         <div class="ddi-col-key">Nhóm tương tác</div>
-                        <div class="ddi-col-val" style="color:var(--med-primary); font-weight:700;">${item.group || 'Chưa xác định'}</div>
-                    </div>
+                        <div class="ddi-col-val" style="color:var(--med-primary); font-weight:700;">${item.group}</div>
+                    </div>` : ''}
+                    ${!isEmpty(item.conseq) ? `
                     <div class="ddi-row">
                         <div class="ddi-col-key">Hậu quả</div>
-                        <div class="ddi-col-val">${item.conseq || '---'}</div>
-                    </div>
+                        <div class="ddi-col-val">${item.conseq}</div>
+                    </div>` : ''}
+                    ${!isEmpty(item.mech) ? `
                     <div class="ddi-row">
                         <div class="ddi-col-key">Cơ chế</div>
-                        <div class="ddi-col-val">${item.mech || '---'}</div>
-                    </div>
+                        <div class="ddi-col-val">${item.mech}</div>
+                    </div>` : ''}
+                    ${!isEmpty(item.manage) ? `
                     <div class="ddi-row" style="background-color:rgba(30, 113, 52, 0.08);">
                         <div class="ddi-col-key" style="color:var(--med-primary)">Xử trí</div>
                         <div class="ddi-col-val" style="font-weight:600; color:var(--med-dark);">${item.manage}</div>
-                    </div>
+                    </div>` : ''}
+                    ${!isEmpty(item.source) ? `
                     <div class="ddi-row">
                         <div class="ddi-col-key" style="font-size:16px; color:#666;">Nguồn</div>
-                        <div class="ddi-col-val" style="font-size:16px; color:#555; font-style:italic;">${item.source || '---'}</div>
-                    </div>
+                        <div class="ddi-col-val" style="font-size:16px; color:#555; font-style:italic;">${item.source}</div>
+                    </div>` : ''}
                 </div>
             </div>`;
         }).join('');
