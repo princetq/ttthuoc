@@ -172,7 +172,7 @@
         input.main-input {
             width: 100%; height: 50px; 
             padding: 0 60px 0 20px; 
-            font-size: 16px; 
+            font-size: 18px; 
             background: #ffffff; 
             border: 1px solid #dcdcdc; 
             border-radius: 25px; 
@@ -207,14 +207,14 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none;
             max-height: 250px; overflow-y: auto; border: 1px solid #eee;
         }
-        .suggestions div { padding: 14px 20px; cursor: pointer; border-bottom: 1px solid #f5f5f5; transition: 0.2s; color: #333; }
+        .suggestions div { padding: 14px 20px; cursor: pointer; border-bottom: 1px solid #f5f5f5; transition: 0.2s; color: #333; font-size: 17px; }
         .suggestions div:hover { background-color: rgba(30, 113, 52, 0.1); color: var(--med-primary); font-weight: 600; }
 
         .tags-wrapper { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; min-height: 40px; align-items: center; }
         .tag-chip {
             background: #ffffff; border: 1px solid var(--med-primary); 
             color: var(--med-primary); padding: 6px 14px;
-            border-radius: 25px; font-size: 14px; font-weight: 600; 
+            border-radius: 25px; font-size: 16px; font-weight: 600; 
             display: flex; align-items: center; gap: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
@@ -238,7 +238,7 @@
             background: rgba(30, 113, 52, 0.08); color: var(--med-primary);
             font-weight: 700; padding: 15px 20px; 
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center; font-size: 15px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 17px;
             word-break: break-word; white-space: normal; 
         }
 
@@ -247,11 +247,11 @@
         .ddi-col-key {
             width: 25%; background-color: #fafafa; font-weight: 600; color: #555;
             padding: 12px 20px; border-right: 1px solid #f0f0f0; flex-shrink: 0; display: flex; align-items: center; 
-            font-size: 16px; 
+            font-size: 18px; 
         }
         .ddi-col-val { 
             width: 75%; padding: 12px 20px; color: #222; background: #ffffff; 
-            font-size: 16px; 
+            font-size: 18px; 
             line-height: 1.6; 
         }
 
@@ -271,16 +271,16 @@
         .disease-card.severe::before { background: var(--danger); }
         .disease-card.cond::before { background: var(--warning); }
 
-        .d-card-header { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--med-primary); }
+        .d-card-header { font-weight: 700; font-size: 18px; margin-bottom: 8px; color: var(--med-primary); }
         .icd-block {
-            font-size: 12px; color: #0277bd; font-weight: 500;
+            font-size: 14px; color: #0277bd; font-weight: 500;
             margin-bottom: 10px; display: inline-block; background: #e1f5fe;
             padding: 3px 8px; border-radius: 4px;
         }
-        .d-card-body { font-size: 14px; color: #444; margin-bottom: 15px; flex-grow: 1; line-height: 1.6; }
+        .d-card-body { font-size: 16px; color: #444; margin-bottom: 15px; flex-grow: 1; line-height: 1.6; }
         .d-manage { 
             margin-top: auto; padding-top: 15px; border-top: 1px dashed #ddd; 
-            color: var(--med-primary); font-weight: 600; font-size: 14px;
+            color: var(--med-primary); font-weight: 600; font-size: 16px;
         }
 
         .empty-state { 
@@ -307,7 +307,7 @@
         }
 
         /* --- MOBILE OVERRIDES --- */
-        @media (max-width: 768px) {
+        @media (max-width: 689px) {
             body { 
                 padding: 10px !important; 
                 width: 100%;
@@ -345,7 +345,7 @@
 
             input.main-input {
                 height: 40px; 
-                font-size: 16px !important; 
+                font-size: 18px !important; 
                 padding-left: 15px;
             }
 
@@ -362,7 +362,7 @@
                 margin-bottom: 6px; 
                 min-height: 30px; 
             }
-            .tag-chip { padding: 4px 10px; font-size: 12px; }
+            .tag-chip { padding: 4px 10px; font-size: 14px; }
 
             .empty-state { padding: 15px 10px; }
             .empty-icon { font-size: 32px !important; margin-bottom: 5px !important; }
@@ -377,7 +377,7 @@
             .ddi-col-val { 
                 width: 100%; 
                 padding: 10px 15px; 
-                font-size: 15px; 
+                font-size: 17px; 
                 line-height: 1.6;
                 word-wrap: break-word; 
                 overflow-wrap: break-word; 
@@ -509,7 +509,7 @@
         var el = document.querySelector('.app-container');
         if (!el) return;
         var vh = window.innerHeight;
-        var bodyPad = window.innerWidth <= 768 ? 20 : 40;
+        var bodyPad = window.innerWidth <= 689 ? 20 : 40;
         var elH = el.offsetHeight;
         var mt = Math.max(0, Math.floor((vh - elH - bodyPad) / 2));
         if (!animate) el.style.transition = 'none';
@@ -598,14 +598,14 @@
     function showToast(msg) {
         const t = document.getElementById('toast'); t.innerText = msg;
         t.style.opacity = '1'; 
-        if(window.innerWidth <= 768) {
+        if(window.innerWidth <= 689) {
              t.classList.add('show');
         } else {
              t.style.transform = 'translateY(0)';
         }
         setTimeout(() => { 
             t.style.opacity = '0'; 
-            if(window.innerWidth <= 768) {
+            if(window.innerWidth <= 689) {
                 t.classList.remove('show');
             } else {
                 t.style.transform = 'translateY(20px)'; 
@@ -808,6 +808,10 @@
                     <div class="ddi-row" style="background-color:rgba(30, 113, 52, 0.08);">
                         <div class="ddi-col-key" style="color:var(--med-primary)">Xử trí</div>
                         <div class="ddi-col-val" style="font-weight:600; color:var(--med-dark);">${item.manage}</div>
+                    </div>
+                    <div class="ddi-row">
+                        <div class="ddi-col-key" style="font-size:16px; color:#666;">Nguồn</div>
+                        <div class="ddi-col-val" style="font-size:16px; color:#555; font-style:italic;">${item.source || '---'}</div>
                     </div>
                 </div>
             </div>`;
