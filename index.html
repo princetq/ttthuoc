@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tra cứu tương tác thuốc - MedPlus Auto Search</title>
 
-    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/u/0/d/1j_iqqlApN1D2tQVi8N4a31-ZIj_YLRvX">
+    <link rel="preload" as="image" href="TTthuoc.jpg">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
@@ -48,13 +48,13 @@
             flex-direction: column;
         }
 
-        /* TỐI ƯU HÓA: Sử dụng host trực tiếp từ Google để ảnh nền hiện ngay lập tức */
+        /* TỐI ƯU HÓA: Sử dụng ảnh nền cùng thư mục Repo */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             z-index: -1;
-            background-image: url('https://lh3.googleusercontent.com/u/0/d/1j_iqqlApN1D2tQVi8N4a31-ZIj_YLRvX');
+            background-image: url('TTthuoc.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -460,11 +460,6 @@
             <div class="tags-wrapper" id="selectedTags"></div>
             <div id="ddiError" style="color:#ffffff; text-shadow:0 1px 2px rgba(0,0,0,0.5); display:none; margin-bottom:10px; font-weight:bold; padding-left:10px;">⚠ Vui lòng chọn tối thiểu 2 thuốc.</div>
 
-            <div id="loader" class="empty-state" style="display:block;">
-                <div class="empty-icon" style="font-size:30px;">⏳</div>
-                <div class="empty-text">Đang đồng bộ dữ liệu...</div>
-            </div>
-
             <div id="emptyStateDDI" class="empty-state" style="display:none;">
                 <div class="empty-icon">💊 + 💊</div>
                 <div class="empty-text">
@@ -530,15 +525,14 @@
         if (!hasResult) centerUI(false);
     });
 
-        const API_URL = "https://script.google.com/macros/s/AKfycbyBN1c-hbTj8B6Cl8oMR2Vq9sapVHr5Mq8hLz0nUJ1PIu976njS9W8qKYRGqW5Rj7LygQ/exec?api=true"; 
+    const API_URL = "tuong_tac_thuoc.json?t=" + new Date().getTime(); 
     const CACHE_KEY = "DLS_TuongTac_v5"; 
 
     let dbBenh = [], dbDDI = [], dbICD = [], suggestionList = [], selectedDrugs = [];
 
     window.onload = function() {
         if(API_URL.includes("DÁN_LINK")) {
-            const loader = document.getElementById('loader');
-            if(loader) loader.innerHTML = "<div class='empty-text'>⚠ Chưa dán Link Google Script!</div>";
+            showToast("⚠ Chưa dán Link Web App API!");
             return;
         }
         const cached = localStorage.getItem(CACHE_KEY);
@@ -548,7 +542,6 @@
                 const parsed = JSON.parse(cached);
                 if(parsed.ddiDB && parsed.ddiDB.length > 0) {
                     processData(parsed);
-                    document.getElementById('loader').style.display = 'none';
                     document.getElementById('emptyStateDDI').style.display = 'block';
                     hasCache = true;
                 }
@@ -559,11 +552,9 @@
     };
 
     async function fetchDataFromCloud(showUI) {
-        const loader = document.getElementById('loader');
         const emptyState = document.getElementById('emptyStateDDI');
 
         if(showUI) {
-            if(loader) loader.style.display = 'block';
             if(emptyState) emptyState.style.display = 'none';
         }
         try {
@@ -576,13 +567,12 @@
                 processData(newData);
                 if(!showUI) showToast("✔ Dữ liệu đã cập nhật!");
             }
-            if(loader) loader.style.display = 'none';
             if(selectedDrugs.length === 0 && emptyState) {
                 emptyState.style.display = 'block';
             }
         } catch(e) { 
             console.error(e); 
-            if(showUI && loader) loader.innerHTML = "<div class='empty-text'>❌ Lỗi kết nối.</div>"; 
+            if(showUI) showToast("❌ Lỗi kết nối dữ liệu."); 
         }
     }
 
